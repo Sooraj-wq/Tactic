@@ -41,18 +41,21 @@ reset.addEventListener('click',()=>{
 
 function computer() {
     for (let i = 0; i < winlist.length; i++) {
-        let tally = 0;
+        let tallyuser = 0;
+        let tallycomp = 0; 
         let win = winlist[i];
 
         win.forEach((element) => {
             if (usergrid.includes(element)) {
-                tally++;
+                tallyuser++;
+            }
+            else if(compgrid.includes(element)){
+                tallycomp++;
             }
         });
-
-        if (tally === 2) {
-            for (let j = 0; j < win.length; j++) {
-                let element = win[j];
+        if(tallycomp===2 || usercomp===2){
+            for(let j=0; j<win.length;j++){
+                let element=win[j];
                 if (!usergrid.includes(element) && !compgrid.includes(element)) {
                     const move = document.querySelector(".gi" + String(element));
                     move.innerHTML = '<p class="token">O</p>';
@@ -62,18 +65,16 @@ function computer() {
                     return; 
                 }
             }
-            break;  
         }
     }
 
-    let rand = Math.floor(Math.random() * 9) + 1;
-    console.log(rand);  
+    
 
     if (grid.length === 9) {
         checkwinner(); 
         return;  
     }
-
+    let rand = Math.floor(Math.random() * 9) + 1;
     while (grid.includes(rand)) {
         rand = Math.floor(Math.random() * 9) + 1;  
     }
