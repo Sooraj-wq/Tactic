@@ -53,7 +53,7 @@ function computer() {
                 tallycomp++;
             }
         });
-        if(tallycomp===2 || usercomp===2){
+        if(tallycomp===2 || tallyuser===2){
             for(let j=0; j<win.length;j++){
                 let element=win[j];
                 if (!usergrid.includes(element) && !compgrid.includes(element)) {
