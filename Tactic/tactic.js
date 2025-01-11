@@ -8,6 +8,7 @@ let userwins=0;
 let compwins=0;
 let ties=0;
 winlist=[[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]];
+let count=0;
 
 /**********************************************************************************/
 
@@ -36,24 +37,34 @@ reset.addEventListener('click',()=>{
         grid=[];
         usergrid=[];
         compgrid=[];
+        count=0;
     })
 })
-
 function computer() {
+    if(usergrid.includes(5) && count===0){
+            const numbers = [1, 3, 7, 9];
+            let randomIndex = Math.floor(Math.random() * numbers.length);
+            let randomNumber = numbers[randomIndex];
+            console.log(randomNumber);
+            if (!usergrid.includes(randomNumber) && !compgrid.includes(randomNumber)) {
+                const move = document.querySelector(".gi" + String(randomNumber));
+                move.innerHTML = '<p class="token">O</p>';
+                grid.push(randomNumber);
+                compgrid.push(randomNumber);
+                count++;
+                return; 
+            }};
+
     for (let i = 0; i < winlist.length; i++) {
-        let tallyuser = 0;
-        let tallycomp = 0; 
+        let tallyComp = 0;
         let win = winlist[i];
 
         win.forEach((element) => {
-            if (usergrid.includes(element)) {
-                tallyuser++;
-            }
-            else if(compgrid.includes(element)){
-                tallycomp++;
-            }
-        });
-        if(tallycomp===2 || tallyuser===2){
+            if (compgrid.includes(element)){ 
+                tallyComp++;
+        }});
+
+        if (tallyComp === 2) {
             for(let j=0; j<win.length;j++){
                 let element=win[j];
                 if (!usergrid.includes(element) && !compgrid.includes(element)) {
@@ -68,7 +79,28 @@ function computer() {
         }
     }
 
-    
+    for (let i = 0; i < winlist.length; i++) {
+        let tallyUser = 0;
+        let win = winlist[i];
+
+        win.forEach((element) => {
+            if (usergrid.includes(element)) tallyUser++;
+        });
+
+        if (tallyUser === 2) {
+            for(let j=0; j<win.length;j++){
+                let element=win[j];
+                if (!usergrid.includes(element) && !compgrid.includes(element)) {
+                    const move = document.querySelector(".gi" + String(element));
+                    move.innerHTML = '<p class="token">O</p>';
+                    grid.push(element);
+                    compgrid.push(element);
+                    checkwinner();
+                    return; 
+                }
+            }
+        }
+    }
 
     if (grid.length === 9) {
         checkwinner(); 
@@ -83,6 +115,7 @@ function computer() {
     move.innerHTML = '<p class="token">O</p>';
     grid.push(rand);
     compgrid.push(rand);
+    count++;
     checkwinner();  
 }
 
@@ -99,22 +132,22 @@ function checkwinner(){
             }
         })
         if(usertally>=3){
-            setTimeout(()=>{alert("User Wins!")},100);
+            setTimeout(()=>{alert("User Wins!")},200);
             gameover=true;
             userwins+=1;
         }else if(comptally>=3){
-            setTimeout(()=>{alert("Computer Wins!")},100);
+            setTimeout(()=>{alert("Computer Wins!")},200);
             gameover=true;
             compwins+=1;
         }})
     if(grid.length===9){
         if(gameover===false){
-            alert("Its a tie");
+            setTimeout(()=>alert("Its a tie"),200);
             gameover=true;
             ties+=1;
         }
     }
-    scorecard.innerHTML=`User: ${userwins} <br> Computer: ${compwins} <br> Ties: ${ties}`
+    scorecard.innerHTML=`User: ${userwins} <br> Computer: ${compwins} <br> Ties: ${ties}`;
     if(gameover===false){
         return 0;
     }else{
